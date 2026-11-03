@@ -24,6 +24,7 @@ export async function connectToMongoDB() {
 const mongoClient = await connectToMongoDB()
 const db = mongoClient.db("BookNook")
 const booksCollection = db.collection("books")
+const borrowCollection = db.collection("borrow")
 
 
 // Call this only when your application terminates
@@ -56,6 +57,11 @@ app.post("/add-book",async(req,res) => {
   
   res.send(result)
   console.log(result)
+})
+app.post("/borrow",async(req,res) =>{
+  const data = req.body
+  const result = await borrowCollection.insertOne(data)
+  res.send(result)
 })
 
 app.listen(PORT, () => {
