@@ -51,6 +51,11 @@ app.get("/all-books/:id" , async(req,res)=>{
   const result = await booksCollection.findOne({_id: new ObjectId(id)})
   res.send(result);
 })
+app.delete("/all-books/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await booksCollection.deleteOne({ _id: new ObjectId(id) });
+  res.send(result);
+});
 // my-books collection
 app.get("/my-books/:email", async (req, res) => {
   const { email } = req.params;
