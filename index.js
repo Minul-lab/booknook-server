@@ -51,6 +51,17 @@ app.get("/all-books/:id" , async(req,res)=>{
   const result = await booksCollection.findOne({_id: new ObjectId(id)})
   res.send(result);
 })
+// my-books collection
+app.get("/my-books/:email", async (req, res) => {
+  const { email } = req.params;
+
+  const result = await booksCollection
+    .find({ "addedBy.email": email })
+    .toArray();
+
+  res.send(result);
+});
+// add-book api
 app.post("/add-book",async(req,res) => {
   const data = req.body
   const result = await booksCollection.insertOne(data);
@@ -58,6 +69,7 @@ app.post("/add-book",async(req,res) => {
   res.send(result)
   console.log(result)
 })
+// post api of borrow book
 app.post("/borrow",async(req,res) =>{
   const data = req.body
   const result = await borrowCollection.insertOne(data)
