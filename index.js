@@ -63,6 +63,11 @@ app.post("/borrow",async(req,res) =>{
   const result = await borrowCollection.insertOne(data)
   res.send(result)
 })
+app.get("/borrow/:email",async(req,res)=>{
+  const {email} = req.params;
+  const result = await borrowCollection.find({email:email}).toArray()
+  res.send(result);
+})
 
 app.listen(PORT, () => {
   console.log(`server is running at ${PORT}`);
