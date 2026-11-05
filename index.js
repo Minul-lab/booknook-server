@@ -102,6 +102,27 @@ app.post("/borrow",async(req,res) =>{
   const result = await borrowCollection.insertOne(data)
   res.send(result)
 })
+app.put("/all-books/:id", verifyToken, async (req, res) => {
+  const { id } = req.params;
+  const { title, author, quantity, category, image, description } = req.body;
+
+  const book = await booksCollection.findOne({ _id: new ObjectId(id) });
+  if (!book) {
+    return res.status(404).send({ msg: "Book not found" });
+  }
+
+  // Only the owner can update (token payload should include the email)
+
+
+  // Only these fields can change; addedBy and submittedAt stay untouched
+  await booksCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { title, author, quantity, category, image, description } },
+  );
+
+  const updatedBook = await booksCollection.findOne({ _id: new ObjectId(id) });
+  res.send(updatedBook);
+});
 app.get("/borrow/:email",async(req,res)=>{
   const {email} = req.params;
   const result = await borrowCollection.find({email:email}).toArray()
