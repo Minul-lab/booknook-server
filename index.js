@@ -97,7 +97,7 @@ app.post("/add-book",verifyToken,async(req,res) => {
   console.log(result)
 })
 // post api of borrow book
-app.post("/borrow",async(req,res) =>{
+app.post("/borrow",verifyToken,async(req,res) =>{
   const data = req.body
   const result = await borrowCollection.insertOne(data)
   res.send(result)
@@ -123,7 +123,7 @@ app.put("/all-books/:id", verifyToken, async (req, res) => {
   const updatedBook = await booksCollection.findOne({ _id: new ObjectId(id) });
   res.send(updatedBook);
 });
-app.get("/borrow/:email",async(req,res)=>{
+app.get("/borrow/:email",verifyToken,async(req,res)=>{
   const {email} = req.params;
   const result = await borrowCollection.find({email:email}).toArray()
   res.send(result);
