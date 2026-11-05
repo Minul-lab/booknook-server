@@ -79,7 +79,7 @@ app.delete("/all-books/:id", async (req, res) => {
   res.send(result);
 });
 // my-books collection
-app.get("/my-books/:email", async (req, res) => {
+app.get("/my-books/:email",verifyToken, async (req, res) => {
   const { email } = req.params;
 
   const result = await booksCollection
@@ -89,7 +89,7 @@ app.get("/my-books/:email", async (req, res) => {
   res.send(result);
 });
 // add-book api
-app.post("/add-book",async(req,res) => {
+app.post("/add-book",verifyToken,async(req,res) => {
   const data = req.body
   const result = await booksCollection.insertOne(data);
   
