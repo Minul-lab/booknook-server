@@ -11,6 +11,16 @@ app.use(express.json())
 const client = new MongoClient(
   process.env.MONGODB_URI
 );
+const verifyToken = (req,res,next)=>{
+  const authHeader = req.headers.authorization
+  if(!authHeader){
+    return res.status(401).send({msg:"uauthorized"})
+  }
+  const token = authHeader.split(" ")
+  console.log(token)
+ 
+  next()
+}
 
 export async function connectToMongoDB() {
   try {
@@ -46,7 +56,7 @@ app.get("/latest-books", async (req, res) => {
 
   res.send(latestBooks);
 });
-app.get("/all-books/:id" , async(req,res)=>{
+app.get("/all-books/:id" ,verifyToken, async(req,res)=>{
   const {id} = req.params
   const result = await booksCollection.findOne({_id: new ObjectId(id)})
   res.send(result);
