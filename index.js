@@ -2,6 +2,7 @@ import express from "express";
 import { MongoClient, ObjectId } from "mongodb";
 import "dotenv/config";
 import cors from 'cors'
+import { createRemoteJWKSet, jwtVerify } from "jose";
 
 const app = express();
 const PORT = 8000;
@@ -11,15 +12,26 @@ app.use(express.json())
 const client = new MongoClient(
   process.env.MONGODB_URI
 );
-const verifyToken = (req,res,next)=>{
+const verifyToken = async(req,res,next)=>{
   const authHeader = req.headers.authorization
   if(!authHeader){
     return res.status(401).send({msg:"uauthorized"})
   }
-  const token = authHeader.split(" ")
-  console.log(token)
+  const token = authHeader.split(" ")[1]
+  if(!token){
+    return res.status(401).send({ msg: "uauthorized" });
+  }
+  const JWKS = createRemoteJWKSet(
+    new URL("http://localhost:3000/api/auth/jwks"),
+  );
+  try{
+      const { payload } = await jwtVerify(token, JWKS)
+  console.log(payload)
  
   next()
+  } catch(error){
+    return res.status(500).send({msg:"server error"})
+  }
 }
 
 export async function connectToMongoDB() {
