@@ -2,9 +2,9 @@
 
 The REST API behind BookNook, a small online library where users add books, borrow them and return them.
 
-**Client Repository:** https://github.com/your-username/booknook-client
-**Live Site:** https://your-live-site-url.vercel.app
-**Server Live URL:** https://your-server-url.vercel.app
+**Client Repository:** https://github.com/Minul-lab/booknook-client
+**Live Site:** https://booknook-frontend-by-minul.vercel.app/
+**Server Live URL:** https://booknook-server-by-minul.vercel.app/
 
 ---
 
@@ -92,7 +92,7 @@ A unique index on `{ bookId, email }` is created when the server starts.
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-username/booknook-server.git
+git clone https://github.com/Minul-lab/booknook-server
 cd booknook-server
 npm install
 ```
